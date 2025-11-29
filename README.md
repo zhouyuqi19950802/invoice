@@ -2,6 +2,10 @@
 
 一个基于 PHP + MySQL 的电子发票管理系统，支持发票二维码扫描、查重、查询和管理功能。
 
+在线体验：https://inv.zhouyuqi.com.cn
+账号：zhouyuqi
+密码：12345678
+
 ## 功能特性
 
 ### 核心功能
@@ -296,14 +300,22 @@ A: 可以通过以下方式：
 1. 使用数据库管理工具直接修改 `users` 表中的密码（使用 `password_hash('新密码', PASSWORD_DEFAULT)` 生成）
 2. 删除 `install/.installed` 文件，重新运行安装程序
 
-## 更新日志
+## 项目截图
+<img width="2560" height="1440" alt="64350e52c060d32f6562b08b51974e5c" src="https://github.com/user-attachments/assets/7dd5b6d7-fc7c-4b4d-b431-df923371cdc2" />
 
-### v1.0.0
-- 初始版本发布
-- 实现发票管理核心功能
-- 实现用户认证和权限管理
-- 实现系统日志功能
-- 实现系统配置功能
+<img width="2560" height="1440" alt="29bd2e2b0cc5e96c189510a59568cad3" src="https://github.com/user-attachments/assets/8a084d8d-62b0-471b-8738-14158931d346" />
+
+<img width="2560" height="1440" alt="7d4415147fd686f4b170a03cfbe98c17" src="https://github.com/user-attachments/assets/809cfd82-52c6-4af5-9cae-fbf70a5eb88a" />
+
+<img width="2560" height="1440" alt="52a36b04c9e8db8b7fe59dd8e7bfe7b2" src="https://github.com/user-attachments/assets/e94fae6f-d7d3-4eb7-9ae4-63b3c63b9cf9" />
+
+<img width="2560" height="1440" alt="00e056647043aec2dcfb85b41eee0efc" src="https://github.com/user-attachments/assets/5c8fd598-d2ae-4d6c-9a63-6f2b20eb18fb" />
+
+
+
+
+
+
 
 ## 许可证
 
