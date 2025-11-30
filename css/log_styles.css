@@ -146,6 +146,13 @@
     max-width: 300px;
 }
 
+/* IP地址列允许换行显示地理位置 */
+#logTable td:nth-child(5) {
+    white-space: normal;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
 .log-status {
     padding: 4px 8px;
     border-radius: 12px;

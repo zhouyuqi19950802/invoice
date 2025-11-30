@@ -178,6 +178,10 @@ class LogManager {
             
             if (result.success) {
                 this.logs = result.data.logs || [];
+                // 调试：检查日志数据中是否包含IP地理位置
+                if (this.logs.length > 0 && this.logs[0].F_ip_location !== undefined) {
+                    // IP地理位置字段存在
+                }
                 // 更新分页数据，保留logs属性
                 this.pagination.totalRecords = result.data.total || 0;
                 this.pagination.currentPage = result.data.page || 1;
@@ -229,12 +233,26 @@ class LogManager {
             const statusClass = log.F_status == 1 ? 'success' : 'failed';
             const statusText = log.F_status == 1 ? '成功' : '失败';
             
+            const ipAddress = log.F_ip_address || '-';
+            // 检查F_ip_location字段是否存在且有效
+            const ipLocation = (log.F_ip_location !== undefined && log.F_ip_location !== null && log.F_ip_location !== '') 
+                ? log.F_ip_location 
+                : null;
+            let ipDisplay = ipAddress;
+            if (ipLocation && ipLocation !== '-' && ipLocation !== ipAddress) {
+                if (ipLocation === '本地/内网') {
+                    ipDisplay = `${ipAddress}<br><small style="color: #999;">${ipLocation}</small>`;
+                } else {
+                    ipDisplay = `${ipAddress}<br><small style="color: #666;">${ipLocation}</small>`;
+                }
+            }
+            
             row.innerHTML = `
                 <td>${log.F_create_time}</td>
                 <td>${log.F_username || '-'}</td>
                 <td>${this.getActionDisplayName(log.F_action)}</td>
                 <td title="${log.F_description || ''}">${(log.F_description || '-').substring(0, 50)}${(log.F_description || '').length > 50 ? '...' : ''}</td>
-                <td>${log.F_ip_address || '-'}</td>
+                <td>${ipDisplay}</td>
                 <td><span class="log-status ${statusClass}">${statusText}</span></td>
                 <td>
                     <span class="log-action" onclick="logManager.showLogDetail(${log.F_id})">详情</span>
@@ -428,6 +446,12 @@ class LogManager {
                                 <span class="log-detail-label">IP地址:</span>
                                 <span class="log-detail-value">${log.F_ip_address || '-'}</span>
                             </div>
+                            ${log.F_ip_location && log.F_ip_location !== '-' && log.F_ip_location !== log.F_ip_address ? `
+                            <div class="log-detail-item">
+                                <span class="log-detail-label">地理位置:</span>
+                                <span class="log-detail-value">${log.F_ip_location}</span>
+                            </div>
+                            ` : ''}
                             <div class="log-detail-item">
                                 <span class="log-detail-label">目标类型:</span>
                                 <span class="log-detail-value">${log.F_target_type || '-'}</span>

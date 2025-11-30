@@ -1,6 +1,7 @@
 <?php
 // Logger.php - 系统日志管理类
 require_once 'config.php';
+require_once 'IpLocation.php';
 
 class Logger {
     private $conn;
@@ -151,6 +152,46 @@ class Logger {
             
             $stmt->execute();
             $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // 批量获取IP地理位置（容错处理，不影响日志列表显示）
+            if (!empty($logs)) {
+                try {
+                    require_once 'IpLocation.php';
+                    $ipLocation = new IpLocation();
+                    $ips = array_map(function($log) {
+                        return $log['F_ip_address'] ?? '-';
+                    }, $logs);
+                    
+                    // 过滤掉空值和无效IP
+                    $ips = array_filter(array_unique($ips), function($ip) {
+                        return !empty($ip) && $ip !== '-';
+                    });
+                    
+                    $locations = [];
+                    if (!empty($ips)) {
+                        $locations = $ipLocation->getBatchLocations($ips);
+                    }
+                    
+                    // 为每条日志添加地理位置信息
+                    foreach ($logs as &$log) {
+                        $ip = $log['F_ip_address'] ?? '-';
+                        if ($ip !== '-' && isset($locations[$ip])) {
+                            $log['F_ip_location'] = $locations[$ip];
+                        } else {
+                            $log['F_ip_location'] = null;
+                        }
+                    }
+                    unset($log); // 释放引用
+                } catch (Exception $e) {
+                    // IP地理位置查询失败不影响日志显示
+                    error_log("Get IP locations error: " . $e->getMessage());
+                    // 为所有日志设置默认值
+                    foreach ($logs as &$log) {
+                        $log['F_ip_location'] = null;
+                    }
+                    unset($log);
+                }
+            }
             
             return [
                 'logs' => $logs,

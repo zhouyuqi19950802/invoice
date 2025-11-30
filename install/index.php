@@ -187,6 +187,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step === 'install') {
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统配置表'
             ");
             
+            // 创建IP地理位置缓存表
+            $conn->exec("
+                CREATE TABLE IF NOT EXISTS ip_location_cache (
+                    F_ip VARCHAR(45) PRIMARY KEY COMMENT 'IP地址',
+                    F_location VARCHAR(255) NOT NULL COMMENT '地理位置信息',
+                    F_update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                    INDEX idx_update_time (F_update_time)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='IP地理位置缓存表'
+            ");
+            
             // 检查并添加头像字段（如果不存在）
             $stmt = $conn->query("
                 SELECT COUNT(*) FROM information_schema.COLUMNS 

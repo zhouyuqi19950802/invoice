@@ -1,331 +1,458 @@
 # 电子发票查重工具
 
-一个基于 PHP + MySQL 的电子发票管理系统，支持发票二维码扫描、查重、查询和管理功能。
+一个基于 PHP + MySQL 开发的电子发票管理系统，支持发票二维码扫描、重复检测、数据导出等功能。
 
-在线体验：https://inv.zhouyuqi.com.cn
-账号：zhouyuqi
-密码：12345678
+## 📋 目录
 
-## 功能特性
+- [功能特性](#功能特性)
+- [技术栈](#技术栈)
+- [系统要求](#系统要求)
+- [安装指南](#安装指南)
+- [使用说明](#使用说明)
+- [目录结构](#目录结构)
+- [安全特性](#安全特性)
+- [常见问题](#常见问题)
+- [更新日志](#更新日志)
+- [许可证](#许可证)
+
+## ✨ 功能特性
 
 ### 核心功能
-- ✅ **发票管理**
-  - 支持扫描或手动输入发票二维码
-  - 自动解析二维码提取发票信息（发票代码、发票号码、开票日期、发票金额）
-  - 发票查重功能，防止重复录入
-  - 发票查询（支持按发票号码、使用人、录入人、录入日期筛选）
-  - 发票编辑和删除
-  - 发票详情查看
-  - 数据导出功能
 
-- ✅ **用户认证系统**
-  - 安全的用户登录/登出
-  - 密码加密存储（使用 PHP password_hash）
-  - 登录速率限制（防止暴力破解）
-  - Session 安全配置
-  - CSRF 防护
+- **发票管理**
+  - 支持通过二维码扫描录入发票信息
+  - 自动解析发票代码、发票号码、开票日期、金额等信息
+  - 发票重复检测，防止重复录入
+  - 发票信息查询、编辑、删除
+  - 支持按发票代码、发票号码、使用人、录入人、日期范围等条件筛选
+  - 数据导出功能（Excel/CSV格式）
 
-- ✅ **用户管理**（管理员功能）
-  - 用户列表查看
-  - 新增用户
-  - 删除用户
-  - 修改用户角色（管理员/普通用户）
-  - 修改用户状态（启用/禁用）
-  - 重置用户密码
+- **用户管理**
+  - 多用户系统，支持管理员和普通用户角色
+  - 用户信息管理（用户名、真实姓名、头像上传）
+  - 用户状态控制（启用/禁用）
+  - 密码修改功能
 
-- ✅ **个人中心**
-  - 修改个人信息（真实姓名）
-  - 上传和修改头像
-  - 修改密码
+- **系统配置**
+  - 网站 Logo 自定义
+  - 网站标题图标（Favicon）设置
+  - 登录页面标题和描述自定义
+  - 主页面标题文字自定义
 
-- ✅ **系统日志**（管理员功能）
-  - 记录所有用户操作（登录、登出、发票操作、用户管理等）
-  - 日志查询和筛选（按操作类型、用户、IP地址、状态等）
-  - 统计信息（今日登录、本周登录、本月登录、活跃用户、失败登录等）
-  - 分页显示
+- **系统日志**
+  - 完整的操作日志记录
+  - 支持按用户、操作类型、时间范围等条件筛选
+  - 日志统计分析（操作统计、用户统计、IP统计等）
+  - 管理员可查看所有系统日志
 
-- ✅ **系统配置**（管理员功能）
-  - 配置网站标题图标（favicon）
-  - 配置登录页面 Logo 和标题
-  - 配置主页面 Logo 和标题文字
+- **安全性**
+  - CSRF 令牌防护
+  - XSS 攻击防护
+  - SQL 注入防护
+  - Session 劫持保护
+  - 文件上传安全验证
+  - 登录速率限制
 
-### 安全特性
-- 🔒 **CSRF 防护**：所有表单提交都包含 CSRF Token 验证
-- 🔒 **XSS 防护**：输入数据自动转义和过滤
-- 🔒 **SQL 注入防护**：使用 PDO 预处理语句
-- 🔒 **登录安全**：登录速率限制、Session 劫持防护
-- 🔒 **文件上传安全**：文件类型验证、MIME 类型检查、文件大小限制
+### 界面特性
 
-## 技术栈
+- 现代化 UI 设计
+- 响应式布局，支持移动端访问
+- 实时数据刷新
+- 友好的错误提示
+- 数据分页显示（默认每页 5 条）
 
-- **后端**：PHP 7.4+
-- **数据库**：MySQL 5.7+ / MariaDB 10.3+
-- **前端**：HTML5 + CSS3 + JavaScript (原生)
-- **图标库**：Font Awesome
+## 🛠 技术栈
 
-## 系统要求
+### 后端
+
+- **PHP 7.4+**
+- **MySQL 5.7+ / MariaDB 10.3+**
+- PDO 数据库操作
+- Session 管理
+
+### 前端
+
+- 原生 JavaScript (ES6+)
+- CSS3 (Flexbox, Grid, Media Queries)
+- Font Awesome 图标库
+
+### 服务器
+
+- Apache / Nginx
+- 支持反向代理（内网穿透）
+
+## 📦 系统要求
+
+### 最低要求
 
 - PHP 7.4 或更高版本
 - MySQL 5.7 或更高版本（或 MariaDB 10.3+）
-- Apache/Nginx Web 服务器
-- PHP 扩展：
-  - PDO
-  - PDO_MySQL
-  - GD（用于图片处理）
-  - fileinfo（用于文件类型验证）
+- Apache 2.4+ 或 Nginx 1.18+
+- 启用以下 PHP 扩展：
+  - `pdo`
+  - `pdo_mysql`
+  - `session`
+  - `json`
+  - `mbstring`
+  - `fileinfo`（用于文件上传验证）
 
-## 安装指南
+### 推荐配置
 
-### 1. 下载项目
+- PHP 8.0+
+- MySQL 8.0+
+- 至少 512MB 内存
+- HTTPS 支持（生产环境）
 
-将项目文件上传到您的 Web 服务器目录（如 `htdocs`、`www` 或 `public_html`）。
+## 🚀 安装指南
 
-### 2. 设置文件权限
+### 方式一：Web 安装（推荐）
 
-确保以下目录具有写入权限：
-- `uploads/avatars/` - 用户头像上传目录
-- `install/` - 安装程序目录（用于创建配置文件）
+1. **上传文件**
+   将项目文件上传到您的 Web 服务器目录（如 `www/invoice`）
 
-```bash
-chmod -R 755 uploads/
-chmod -R 755 install/
-```
+2. **访问安装页面**
+   在浏览器中访问：
+   ```
+   http://your-domain.com/invoice/install/
+   ```
 
-### 3. 运行安装程序
+3. **填写安装信息**
+   - 数据库主机和端口（默认：127.0.0.1:3306）
+   - 数据库名称
+   - 数据库用户名和密码
+   - 管理员用户名、密码和真实姓名
 
-1. 在浏览器中访问：`http://your-domain.com/invoice/install/`
-2. 按照安装向导填写以下信息：
-   - **数据库配置**
-     - 数据库主机（默认：127.0.0.1）
-     - 端口（默认：3306）
-     - 数据库名称（默认：invoice）
-     - 数据库用户名
-     - 数据库密码
-   - **管理员账户**
-     - 管理员用户名
-     - 管理员真实姓名
-     - 管理员密码（至少6位）
-     - 确认密码
-
-3. 点击"开始安装"，系统将自动：
-   - 创建数据库（如果不存在）
-   - 创建数据表（users、invoice_info、system_logs、system_config）
+4. **完成安装**
+   点击"开始安装"按钮，系统将自动：
+   - 创建数据库
+   - 创建数据表
    - 创建管理员账户
-   - 生成配置文件（`install/.env`）
+   - 生成配置文件
    - 创建安装锁定文件
 
-### 4. 完成安装
+5. **安装完成后**
+   - 系统会自动跳转到登录页面
+   - 安装目录 `install/` 将被保护，无法再次访问
 
-安装完成后，系统会自动跳转到登录页面，使用刚才创建的管理员账户登录即可。
+### 方式二：手动安装
 
-> **注意**：安装完成后，安装程序会被自动禁用。如需重新安装，请删除 `install/.installed` 文件。
+1. **创建数据库**
+   ```sql
+   CREATE DATABASE invoice CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
 
-## 使用说明
+2. **配置数据库连接**
+   在 `install/.env` 文件中配置数据库信息：
+   ```env
+   DB_HOST=127.0.0.1:3306
+   DB_NAME=invoice
+   DB_USERNAME=root
+   DB_PASSWORD=your_password
+   ```
+
+3. **导入数据库结构**
+   访问 `install/index.php` 完成安装，或手动执行 SQL 脚本创建表结构
+
+### 目录权限设置
+
+确保以下目录具有写入权限：
+- `install/`（用于创建 `.env` 和 `.installed` 文件）
+- `uploads/avatars/`（用于上传用户头像）
+- `logs/`（用于记录错误日志）
+
+```bash
+chmod 755 install
+chmod 755 uploads/avatars
+chmod 755 logs
+```
+
+### Nginx 配置示例
+
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /path/to/invoice;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    # 保护安装目录
+    location ~ ^/install/\.(env|installed)$ {
+        deny all;
+        return 404;
+    }
+}
+```
+
+### Apache 配置
+
+如果使用 Apache，确保启用 `mod_rewrite` 模块，并确保 `.htaccess` 文件生效。
+
+## 📖 使用说明
 
 ### 登录系统
 
-1. 访问登录页面：`http://your-domain.com/invoice/login.php`
-2. 输入用户名和密码
-3. 点击"登录"按钮
+1. 访问 `login.php` 页面
+2. 使用安装时创建的管理员账户登录
+3. 登录成功后跳转到主页面
 
-### 新增发票
+### 添加发票
 
 1. 点击"新增发票"按钮
-2. 在弹窗中：
-   - 扫描或手动输入发票二维码（系统会自动解析）
-   - 填写凭证使用人（必填）
-   - 填写凭证号（必填）
-3. 点击"保存发票"按钮
+2. 填写以下信息：
+   - **二维码内容**：扫描发票二维码获取
+   - **凭证使用人**：发票使用人姓名
+   - **凭证号**：关联的凭证编号
+3. 点击"提交"按钮
+4. 系统自动解析二维码并检测重复
+5. 如果发票已存在，系统会提示重复信息
+6. 如果发票不存在，系统会保存发票信息
 
 ### 查询发票
 
-在搜索区域可以按以下条件查询：
-- 发票号码
-- 发票使用人
-- 录入人
-- 录入日期范围
+在主页面可以使用以下筛选条件：
 
-点击"查询"按钮执行搜索，点击"重置"按钮清空搜索条件。
+- **发票代码**：输入发票代码进行精确搜索
+- **发票号码**：输入发票号码进行精确搜索
+- **使用人**：输入使用人姓名进行搜索
+- **录入人**：选择录入人进行筛选
+- **日期范围**：选择开始日期和结束日期
+- **重置**：清除所有筛选条件
 
-### 编辑发票
+### 编辑/删除发票
 
-1. 在发票列表中点击"编辑"按钮
-2. 修改凭证使用人或凭证号
-3. 点击"保存修改"按钮
-
-> **注意**：发票代码、发票号码、开票日期、发票金额等由二维码解析得出，不可修改。
-
-### 删除发票
-
-在发票列表中点击"删除"按钮，确认后即可删除。
+- **编辑**：点击表格中的"编辑"按钮，修改发票信息后保存
+- **删除**：点击表格中的"删除"按钮，确认后删除发票记录
 
 ### 导出数据
 
-点击"导出"按钮，系统会将当前查询结果导出为 CSV 格式文件。
+1. 设置筛选条件（可选）
+2. 点击"导出数据"按钮
+3. 选择导出格式（Excel 或 CSV）
+4. 下载导出的文件
 
 ### 用户管理（管理员）
 
 1. 点击"用户管理"按钮
-2. 可以执行以下操作：
-   - 新增用户
-   - 编辑用户信息
-   - 修改用户角色
-   - 修改用户状态（启用/禁用）
-   - 重置用户密码
-   - 删除用户
-
-### 系统日志（管理员）
-
-1. 点击"系统日志"按钮
-2. 查看系统操作日志
-3. 可以按操作类型、用户、IP地址、状态等条件筛选
-4. 查看统计信息（今日登录、本周登录等）
+2. 可以查看所有用户列表
+3. 可以添加新用户
+4. 可以编辑用户信息（包括用户名、真实姓名、角色、状态）
+5. 可以禁用/启用用户
 
 ### 系统配置（管理员）
 
 1. 点击"系统配置"按钮
-2. 可以配置：
-   - 网站标题图标（favicon.ico）
+2. 可以设置以下内容：
+   - 网站 Logo（主页面左上角）
+   - 网站标题图标（Favicon）
    - 登录页面 Logo
    - 登录页面标题和描述
-   - 主页面 Logo
    - 主页面标题文字
+3. 上传文件后点击"保存配置"
+
+### 系统日志（管理员）
+
+1. 点击"系统日志"按钮
+2. 可以查看所有系统操作日志
+3. 可以按以下条件筛选：
+   - 用户名
+   - 操作类型
+   - 时间范围
+   - IP 地址
+4. 可以查看日志统计信息
 
 ### 个人中心
 
-1. 点击右上角用户头像，选择"个人中心"
-2. 可以：
-   - 修改真实姓名
-   - 上传/更换头像
-   - 修改密码
+1. 点击右上角用户名，选择"个人中心"
+2. 可以修改真实姓名
+3. 可以修改密码
+4. 可以上传头像
 
-## 数据库结构
+### 清除缓存
 
-### users 表（用户表）
-- `F_id` - 用户ID（主键）
-- `F_username` - 用户名（唯一）
-- `F_password` - 密码（加密）
-- `F_realname` - 真实姓名
-- `F_avatar` - 头像路径
-- `F_role` - 角色（admin/user）
-- `F_status` - 状态（1-启用，0-禁用）
-- `F_create_time` - 创建时间
-- `F_update_time` - 更新时间
+1. 点击右上角用户名，选择"清除缓存"
+2. 系统会清除浏览器缓存并刷新页面
 
-### invoice_info 表（发票信息表）
-- `F_Id` - 发票ID（主键）
-- `F_inv_code` - 发票代码
-- `F_inv_num` - 发票号码
-- `F_inv_date` - 开票日期
-- `F_inv_money` - 发票金额
-- `F_inv_user` - 凭证使用人
-- `F_inv_doc` - 凭证号
-- `F_inv_qr` - 发票二维码内容
-- `F_creator_id` - 录入人ID（外键）
-- `F_CreatorTime` - 录入时间
+## 📁 目录结构
 
-### system_logs 表（系统日志表）
-- `F_id` - 日志ID（主键）
-- `F_user_id` - 用户ID
-- `F_username` - 用户名
-- `F_action` - 操作类型
-- `F_description` - 操作描述
-- `F_ip_address` - IP地址
-- `F_user_agent` - 用户代理
-- `F_target_type` - 目标类型
-- `F_target_id` - 目标ID
-- `F_status` - 状态（1-成功，0-失败）
-- `F_error_message` - 错误信息
-- `F_create_time` - 创建时间
-
-### system_config 表（系统配置表）
-- `F_key` - 配置键（主键）
-- `F_value` - 配置值
-- `F_description` - 配置描述
-- `F_update_time` - 更新时间
-
-## 配置文件
-
-系统配置文件位于 `install/.env`，包含数据库连接信息：
-
-```env
-DB_HOST=127.0.0.1:3306
-DB_NAME=invoice
-DB_USERNAME=root
-DB_PASSWORD=your_password
+```
+invoice/
+├── css/                          # 样式文件
+│   ├── style.css                # 主样式文件
+│   ├── log_styles.css           # 日志页面样式
+│   └── resources/               # 资源文件
+│       └── fontawesome/         # Font Awesome 图标库
+├── error_pages/                 # 错误页面
+│   ├── 404.html
+│   └── 500.html
+├── image/                       # 图片资源
+│   ├── bg.jpg                  # 背景图片
+│   ├── favicon.ico             # 网站图标
+│   └── logo.png                # Logo
+├── install/                     # 安装目录
+│   ├── index.php               # 安装脚本
+│   ├── .env                    # 数据库配置文件（安装后生成）
+│   ├── .installed              # 安装锁定文件（安装后生成）
+│   └── .htaccess               # 保护敏感文件
+├── js/                          # JavaScript 文件
+│   ├── script.js               # 主脚本文件
+│   └── log_manager.js          # 日志管理脚本
+├── logs/                        # 日志目录
+│   └── error.log               # 错误日志
+├── server/                      # 服务器端 PHP 文件
+│   ├── Auth.php                # 认证类
+│   ├── config.php              # 数据库配置类
+│   ├── ConfigManager.php       # 配置管理类
+│   ├── InvoiceProcessor.php    # 发票处理类
+│   ├── Logger.php              # 日志记录类
+│   ├── SecurityConfig.php      # 安全配置类
+│   ├── UserManager.php         # 用户管理类
+│   ├── InstallChecker.php      # 安装检查类
+│   ├── delete_invoice.php      # 删除发票接口
+│   ├── edit_invoice.php        # 编辑发票接口
+│   ├── export_invoices.php     # 导出发票接口
+│   ├── get_config.php          # 获取配置接口
+│   ├── get_invoice_detail.php  # 获取发票详情接口
+│   ├── get_invoices.php        # 获取发票列表接口
+│   ├── get_log_actions.php     # 获取日志操作类型接口
+│   ├── get_log_statistics.php  # 获取日志统计接口
+│   ├── get_logs.php            # 获取日志列表接口
+│   ├── process_invoice.php     # 处理发票接口
+│   ├── save_config.php         # 保存配置接口
+│   ├── update_user_realname.php # 更新用户真实姓名接口
+│   ├── upload_avatar.php       # 上传头像接口
+│   └── upload_system_file.php  # 上传系统文件接口
+├── uploads/                     # 上传文件目录
+│   └── avatars/                # 用户头像目录
+├── index.php                    # 主页面
+├── login.php                    # 登录页面
+└── README.md                    # 本文档
 ```
 
-> **安全提示**：请妥善保管 `.env` 文件，不要将其提交到版本控制系统。
+## 🔒 安全特性
 
-## 安全建议
+### 认证与授权
 
-1. **生产环境部署**：
-   - 删除或重命名 `install/` 目录
-   - 确保 `.env` 文件权限设置为 600（仅所有者可读写）
-   - 启用 HTTPS
-   - 定期备份数据库
+- 基于 Session 的用户认证
+- 角色权限控制（管理员/普通用户）
+- 密码使用 `password_hash()` 进行加密存储
 
-2. **密码安全**：
-   - 使用强密码（至少8位，包含字母、数字和特殊字符）
-   - 定期更换密码
-   - 不要使用默认密码
+### 防护措施
 
-3. **服务器安全**：
-   - 保持 PHP 和 MySQL 版本更新
-   - 配置防火墙规则
-   - 限制数据库访问权限
+- **CSRF 防护**：所有 POST 请求都包含 CSRF 令牌验证
+- **XSS 防护**：所有用户输入都经过 HTML 转义和过滤
+- **SQL 注入防护**：使用 PDO 预处理语句，所有参数绑定
+- **Session 安全**：
+  - Session ID 使用 48 位随机字符串
+  - Cookie 设置 HttpOnly 和 Secure（HTTPS）
+  - Session 固定攻击防护
+  - User-Agent 验证（反向代理环境下已优化）
 
-## 常见问题
+### 文件上传安全
 
-### Q: 安装时提示数据库连接失败？
-A: 请检查：
-- 数据库服务是否启动
-- 数据库主机、端口、用户名、密码是否正确
-- 数据库用户是否有创建数据库的权限
+- 文件类型验证（白名单机制）
+- MIME 类型验证
+- 文件大小限制（5MB）
+- 文件名随机化
 
-### Q: 无法上传头像？
-A: 请检查：
-- `uploads/avatars/` 目录是否存在
-- 目录权限是否设置为 755 或 777
-- PHP 的 `upload_max_filesize` 和 `post_max_size` 配置是否足够
+### 其他安全措施
 
-### Q: 登录后自动退出？
-A: 可能是 Session 配置问题，请检查：
-- PHP 的 `session.save_path` 是否可写
-- 服务器时间是否正确
-- 是否使用了反向代理（系统已支持）
+- 登录速率限制（防止暴力破解）
+- 输入验证和过滤
+- 敏感文件保护（`.env`、`.installed` 等）
+- 错误信息不暴露敏感信息
 
-### Q: 如何重置管理员密码？
-A: 可以通过以下方式：
-1. 使用数据库管理工具直接修改 `users` 表中的密码（使用 `password_hash('新密码', PASSWORD_DEFAULT)` 生成）
-2. 删除 `install/.installed` 文件，重新运行安装程序
+## ❓ 常见问题
 
-## 项目截图
-<img width="2560" height="1440" alt="64350e52c060d32f6562b08b51974e5c" src="https://github.com/user-attachments/assets/7dd5b6d7-fc7c-4b4d-b431-df923371cdc2" />
+### 1. 安装时提示"数据库连接失败"
 
-<img width="2560" height="1440" alt="29bd2e2b0cc5e96c189510a59568cad3" src="https://github.com/user-attachments/assets/8a084d8d-62b0-471b-8738-14158931d346" />
+- 检查数据库服务是否已启动
+- 确认数据库主机、端口、用户名、密码是否正确
+- 确认数据库用户是否有创建数据库的权限
 
-<img width="2560" height="1440" alt="7d4415147fd686f4b170a03cfbe98c17" src="https://github.com/user-attachments/assets/809cfd82-52c6-4af5-9cae-fbf70a5eb88a" />
+### 2. 登录后页面无限刷新
 
-<img width="2560" height="1440" alt="52a36b04c9e8db8b7fe59dd8e7bfe7b2" src="https://github.com/user-attachments/assets/e94fae6f-d7d3-4eb7-9ae4-63b3c63b9cf9" />
+- 检查 Session 是否正常工作
+- 如果使用反向代理，确保正确配置了 `X-Forwarded-For`、`X-Forwarded-Proto` 等头部
+- 检查 PHP `session` 扩展是否已启用
 
-<img width="2560" height="1440" alt="00e056647043aec2dcfb85b41eee0efc" src="https://github.com/user-attachments/assets/5c8fd598-d2ae-4d6c-9a63-6f2b20eb18fb" />
+### 3. 无法上传文件
 
+- 检查 `uploads/avatars/` 目录是否存在且有写入权限
+- 检查 PHP `upload_max_filesize` 和 `post_max_size` 配置
+- 检查文件类型是否在允许列表中
 
+### 4. 二维码解析失败
 
+- 确认二维码内容格式正确
+- 检查二维码是否完整（没有被截断）
+- 查看系统日志了解详细错误信息
 
+### 5. 发票重复检测不准确
 
+- 系统通过发票代码和发票号码组合判断重复
+- 确认录入的二维码信息完整正确
 
+### 6. 使用内网穿透后无法登录
 
-## 许可证
+参考 Nginx 配置示例，确保正确传递以下头部：
+```nginx
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Real-IP $remote_addr;
+```
 
-本项目采用 MIT 许可证。
+### 7. putenv() 函数未定义错误
 
-## 技术支持
+系统已自动兼容不支持 `putenv()` 的环境。如果仍出现错误，请检查：
+- PHP 版本是否为 7.4+
+- `SecurityConfig.php` 是否已更新到最新版本
 
-如有问题或建议，请提交 Issue 或联系开发者。
+## 📝 更新日志
+
+### v1.0.0 (2025-11)
+
+- ✨ 初始版本发布
+- ✅ 发票管理功能
+- ✅ 用户管理功能
+- ✅ 系统配置功能
+- ✅ 系统日志功能
+- ✅ Web 安装向导
+- ✅ 移动端适配
+- ✅ 安全防护机制
+
+## 📄 许可证
+
+本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件（如有）。
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📧 联系方式
+
+如有问题或建议，请通过以下方式联系：
+
+- 提交 Issue
+- 发送邮件
 
 ---
 
-**注意**：本系统仅供学习和内部使用，请勿用于商业用途。使用本系统时，请遵守相关法律法规。
+**注意**：生产环境部署时，请确保：
+1. 使用 HTTPS 协议
+2. 修改默认管理员密码
+3. 定期备份数据库
+4. 定期检查系统日志
+5. 保持 PHP 和 MySQL 版本更新
+
 
