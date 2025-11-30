@@ -1,0 +1,36 @@
+# 安装文件夹安全保护
+# 安装完成后，禁止直接访问安装文件
+
+<Files "index.php">
+    # 如果已安装，只允许本地访问（用于调试）
+    <IfModule mod_rewrite.c>
+        RewriteEngine On
+        # 检查是否存在安装锁定文件
+        RewriteCond %{DOCUMENT_ROOT}/invoice/install/.installed -f
+        # 如果不是本地访问且没有force_install参数，则禁止访问
+        RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
+        RewriteCond %{REMOTE_ADDR} !^::1$
+        RewriteCond %{QUERY_STRING} !force_install
+        RewriteRule .* - [F,L]
+    </IfModule>
+</Files>
+
+# 禁止访问.env配置文件
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# 禁止访问安装锁定文件
+<Files ".installed">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# 禁止目录列表
+Options -Indexes
+
+
+
+
+
